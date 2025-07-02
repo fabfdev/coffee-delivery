@@ -11,6 +11,7 @@ import {
 } from "@expo-google-fonts/baloo-2";
 
 import { THEME } from "@styles/theme";
+import { Home } from "@screens/Home";
 
 export default function App() {
   const [fontsRobotoLoaded] = useFonts({ Roboto_400Regular, Roboto_700Bold });
@@ -21,27 +22,9 @@ export default function App() {
   }
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>
-        Open up App.tsx to start working on your app!
-      </Text>
-      <Text style={styles.subTitle}>SubTitle with Baloo</Text>
-      <StatusBar style="auto" />
+    <View style={{ flex: 1, backgroundColor: THEME.COLOR.WHITE }}>
+      <Home />
+      <StatusBar style="light" />
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  title: {
-    fontFamily: THEME.FONTS.BOLD,
-  },
-  subTitle: {
-    fontFamily: THEME.FONTS.BALOO_BOLD,
-  },
-});
