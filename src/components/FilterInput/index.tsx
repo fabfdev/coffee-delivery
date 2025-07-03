@@ -16,18 +16,22 @@ import { ComponentProps } from "react";
 
 type Props = ComponentProps<typeof Animated.View> & {
   scrollY: SharedValue<number>;
+  filterInputHeight: number;
   onLayout?: (event: any) => void;
 };
 
-export function FilterInput({ scrollY, onLayout }: Props) {
+export function FilterInput({ scrollY, filterInputHeight, onLayout }: Props) {
   const containerStyle = useAnimatedStyle(() => {
     return {
-      opacity: interpolate(scrollY.value, [0, 301], [1, 0]),
+      opacity: interpolate(scrollY.value, [0, filterInputHeight], [1, 0]),
     };
   });
 
   return (
-    <Animated.View style={[styles.container, containerStyle]} onLayout={onLayout}>
+    <Animated.View
+      style={[styles.container, containerStyle]}
+      onLayout={onLayout}
+    >
       <Text style={styles.headline} numberOfLines={2}>
         Encontre o café perfeito para qualquer hora do dia
       </Text>

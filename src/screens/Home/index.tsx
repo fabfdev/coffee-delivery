@@ -19,7 +19,6 @@ export function Home() {
 
   const scrollHandler = useAnimatedScrollHandler({
     onScroll: (event) => {
-      console.log(event.contentOffset.y);
       scrollY.value = event.contentOffset.y;
     },
   });
@@ -52,6 +51,7 @@ export function Home() {
           const { height } = event.nativeEvent.layout;
           setHeaderHeight(height);
         }}
+        filterInputHeight={filterInputHeight}
       />
 
       <Animated.ScrollView style={styles.container} onScroll={scrollHandler}>
@@ -61,6 +61,7 @@ export function Home() {
             const { height } = event.nativeEvent.layout;
             setFilterInputHeight(height);
           }}
+          filterInputHeight={filterInputHeight}
         />
 
         <View
