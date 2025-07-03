@@ -5,7 +5,6 @@ import { THEME } from "@styles/theme";
 export const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 24,
-    backgroundColor: THEME.COLOR.GRAY_100,
   },
   headline: {
     fontFamily: THEME.FONTS.BALOO_BOLD,

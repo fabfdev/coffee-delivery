@@ -1,9 +1,5 @@
-import { ScrollView, Text, TextInput, View } from "react-native";
-import {
-  MapPinIcon,
-  ShoppingCartIcon,
-  MagnifyingGlassIcon,
-} from "phosphor-react-native";
+import { useState, useEffect } from "react";
+import { Text, View } from "react-native";
 import Animated, {
   useAnimatedScrollHandler,
   useAnimatedStyle,
@@ -18,26 +14,29 @@ import { FilterInput } from "@components/FilterInput";
 export function Home() {
   const scrollY = useSharedValue(0);
 
+  const [headerHeight, setHeaderHeight] = useState(0);
+  const [filterInputHeight, setFilterInputHeight] = useState(0);
+
   const scrollHandler = useAnimatedScrollHandler({
     onScroll: (event) => {
-        console.log(event.contentOffset.y)
+      console.log(event.contentOffset.y);
       scrollY.value = event.contentOffset.y;
     },
   });
 
   const fixedFilter = useAnimatedStyle(() => {
-    const shouldBeFixed = scrollY.value >= 301;
+    const shouldBeFixed = scrollY.value > filterInputHeight;
     return {
       position: "absolute",
       zIndex: 2,
       left: 0,
       right: 0,
       opacity: shouldBeFixed ? 1 : 0,
-      //   display: shouldBeFixed ? "flex" : "none",
+      display: shouldBeFixed ? "flex" : "none",
       backgroundColor: "red",
       paddingHorizontal: 24,
       paddingVertical: 32,
-      marginTop: 64 + 24
+      marginTop: headerHeight,
     };
   });
 
@@ -47,10 +46,22 @@ export function Home() {
         <Text>Nossos cafés</Text>
       </Animated.View>
 
-      <Header scrollY={scrollY} />
+      <Header
+        scrollY={scrollY}
+        onLayout={(event) => {
+          const { height } = event.nativeEvent.layout;
+          setHeaderHeight(height);
+        }}
+      />
 
       <Animated.ScrollView style={styles.container} onScroll={scrollHandler}>
-        <FilterInput scrollY={scrollY} />
+        <FilterInput
+          scrollY={scrollY}
+          onLayout={(event) => {
+            const { height } = event.nativeEvent.layout;
+            setFilterInputHeight(height);
+          }}
+        />
 
         <View
           style={{

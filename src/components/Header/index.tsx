@@ -1,3 +1,4 @@
+import { ComponentProps } from "react";
 import { Text, TextInput, View } from "react-native";
 import {
   MapPinIcon,
@@ -13,11 +14,12 @@ import { styles } from "./styles";
 
 import { THEME } from "@styles/theme";
 
-type Props = {
+type Props = ComponentProps<typeof Animated.View> & {
   scrollY: SharedValue<number>;
+  onLayout?: (event: any) => void;
 };
 
-export function Header({ scrollY }: Props) {
+export function Header({ scrollY, onLayout }: Props) {
   const headerStyle = useAnimatedStyle(() => {
     return {
       backgroundColor: interpolateColor(
@@ -29,7 +31,7 @@ export function Header({ scrollY }: Props) {
   });
 
   return (
-    <Animated.View style={[styles.container, headerStyle]}>
+    <Animated.View style={[styles.container, headerStyle]} onLayout={onLayout}>
       <View style={styles.containerLocation}>
         <MapPinIcon color={THEME.COLOR.PURPLE} />
 
