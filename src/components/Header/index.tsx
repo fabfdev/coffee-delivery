@@ -2,40 +2,41 @@ import { Text, TextInput, View } from "react-native";
 import {
   MapPinIcon,
   ShoppingCartIcon,
-  MagnifyingGlassIcon,
 } from "phosphor-react-native";
+import Animated, {
+  interpolateColor,
+  SharedValue,
+  useAnimatedStyle,
+} from "react-native-reanimated";
 
 import { styles } from "./styles";
 
 import { THEME } from "@styles/theme";
 
-import CoffeeSvg from "@assets/image_coffee.svg";
+type Props = {
+  scrollY: SharedValue<number>;
+};
 
-export function Header() {
+export function Header({ scrollY }: Props) {
+  const headerStyle = useAnimatedStyle(() => {
+    return {
+      backgroundColor: interpolateColor(
+        scrollY.value,
+        [20, 301],
+        [THEME.COLOR.GRAY_100, THEME.COLOR.WHITE]
+      ),
+    };
+  });
+
   return (
-    <View style={styles.container}>
+    <Animated.View style={[styles.container, headerStyle]}>
       <View style={styles.containerLocation}>
         <MapPinIcon color={THEME.COLOR.PURPLE} />
 
         <Text style={styles.title}>Guarapari, ES</Text>
 
         <ShoppingCartIcon color={THEME.COLOR.YELLOW_DARK} />
-      </View>
-
-      <Text style={styles.headline}>
-        Encontre o café perfeito para qualquer hora do dia
-      </Text>
-
-      <View style={styles.containerInput}>
-        <MagnifyingGlassIcon color={THEME.COLOR.GRAY_400} />
-        <TextInput
-          style={styles.input}
-          placeholder="Pesquisar"
-          placeholderTextColor={THEME.COLOR.GRAY_400}
-        />
-      </View>
-
-      <CoffeeSvg style={styles.coffeeImg} />
-    </View>
+      </View>      
+    </Animated.View>
   );
 }

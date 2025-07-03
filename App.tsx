@@ -24,7 +24,7 @@ export default function App() {
   return (
     <View style={{ flex: 1, backgroundColor: THEME.COLOR.WHITE }}>
       <Home />
-      <StatusBar style="light" />
+      <StatusBar style="auto" animated />
     </View>
   );
 }

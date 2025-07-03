@@ -4,8 +4,9 @@ import { THEME } from "@styles/theme";
 
 export const styles = StyleSheet.create({
   container: {
+    paddingTop: 64,
+    paddingBottom: 24,
     paddingHorizontal: 24,
-    paddingBottom: 64,
   },
   containerLocation: {
     flexDirection: "row",
@@ -17,28 +18,5 @@ export const styles = StyleSheet.create({
     fontFamily: THEME.FONTS.REGULAR,
     fontSize: 14,
     marginLeft: 8,
-  },
-  headline: {
-    fontFamily: THEME.FONTS.BALOO_BOLD,
-    fontSize: 20,
-    color: THEME.COLOR.WHITE,
-    marginTop: 36,
-  },
-  containerInput: {
-    height: 42,
-    backgroundColor: THEME.COLOR.GRAY_200,
-    flexDirection: "row",
-    alignItems: "center",
-    paddingHorizontal: 12,
-    gap: 8,
-    borderRadius: 4,
-    marginTop: 12,
-  },
-  input: {
-    color: THEME.COLOR.WHITE,
-    fontFamily: THEME.FONTS.REGULAR,
-  },
-  coffeeImg: {
-    alignSelf: "flex-end"
   }
 });
