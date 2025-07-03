@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
-import { Text, View } from "react-native";
+import { Text, View, StatusBar } from "react-native";
 import Animated, {
+  runOnJS,
   useAnimatedScrollHandler,
   useAnimatedStyle,
   useSharedValue,
@@ -16,6 +17,9 @@ export function Home() {
 
   const [headerHeight, setHeaderHeight] = useState(0);
   const [filterInputHeight, setFilterInputHeight] = useState(0);
+  const [statusBarStyle, setStatusBarStyle] = useState<
+    "light-content" | "dark-content"
+  >("light-content");
 
   const scrollHandler = useAnimatedScrollHandler({
     onScroll: (event) => {
@@ -25,6 +29,12 @@ export function Home() {
 
   const fixedFilter = useAnimatedStyle(() => {
     const shouldBeFixed = scrollY.value > filterInputHeight;
+    ("worklet");
+    if (shouldBeFixed) {
+      runOnJS(setStatusBarStyle)("dark-content");
+    } else {
+      runOnJS(setStatusBarStyle)("light-content");
+    }
     return {
       position: "absolute",
       zIndex: 2,
@@ -39,8 +49,19 @@ export function Home() {
     };
   });
 
+  useEffect(() => {
+    StatusBar.setBarStyle(statusBarStyle);
+  }, [statusBarStyle]);
+
   return (
     <>
+      <StatusBar
+        barStyle={"light-content"}
+        backgroundColor="transparent"
+        animated
+        translucent
+      />
+
       <Animated.View style={fixedFilter}>
         <Text>Nossos cafés</Text>
       </Animated.View>

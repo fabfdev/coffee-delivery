@@ -1,5 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
-import { StatusBar } from "expo-status-bar";
+import { View } from "react-native";
 import {
   Roboto_400Regular,
   Roboto_700Bold,
@@ -24,7 +23,6 @@ export default function App() {
   return (
     <View style={{ flex: 1, backgroundColor: THEME.COLOR.WHITE }}>
       <Home />
-      <StatusBar style="auto" animated />
     </View>
   );
 }
