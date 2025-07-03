@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Text, View, StatusBar } from "react-native";
+import { Text, View, StatusBar, FlatList } from "react-native";
 import Animated, {
   runOnJS,
   useAnimatedScrollHandler,
@@ -11,6 +11,7 @@ import { styles } from "./styles";
 
 import { Header } from "@components/Header";
 import { FilterInput } from "@components/FilterInput";
+import { BestCoffee } from "@components/BestCoffee";
 
 export function Home() {
   const scrollY = useSharedValue(0);
@@ -75,113 +76,35 @@ export function Home() {
         filterInputHeight={filterInputHeight}
       />
 
-      <Animated.ScrollView style={styles.container} onScroll={scrollHandler}>
-        <FilterInput
-          scrollY={scrollY}
-          onLayout={(event) => {
-            const { height } = event.nativeEvent.layout;
-            setFilterInputHeight(height);
-          }}
-          filterInputHeight={filterInputHeight}
-        />
+      <Animated.FlatList
+        data={["1", "2", "3", "5", "asd", "adasda"]}
+        keyExtractor={(item) => item}
+        style={styles.container}
+        onScroll={scrollHandler}
+        renderItem={() => <Text style={{ height: 200 }}>ADB</Text>}
+        ListHeaderComponent={() => (
+          <>
+            <FilterInput
+              scrollY={scrollY}
+              onLayout={(event) => {
+                const { height } = event.nativeEvent.layout;
+                setFilterInputHeight(height);
+              }}
+              filterInputHeight={filterInputHeight}
+            />
 
-        <View
-          style={{
-            backgroundColor: "red",
-            paddingHorizontal: 24,
-            paddingVertical: 32,
-          }}
-        >
-          <Text>Nossos cafés</Text>
-        </View>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-        <Text>ADB</Text>
-      </Animated.ScrollView>
+            <View
+              style={{
+                backgroundColor: "red",
+                paddingHorizontal: 24,
+                paddingVertical: 32,
+              }}
+            >
+              <Text>Nossos cafés</Text>
+            </View>
+          </>
+        )}
+      />
     </>
   );
 }

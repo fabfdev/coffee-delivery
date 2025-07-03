@@ -6,6 +6,7 @@ export const styles = StyleSheet.create({
   container: {
     paddingTop: 32,
     paddingHorizontal: 24,
+    backgroundColor: THEME.COLOR.GRAY_100,
   },
   headline: {
     fontFamily: THEME.FONTS.BALOO_BOLD,
