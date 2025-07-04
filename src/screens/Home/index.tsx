@@ -16,6 +16,7 @@ import { CoffeeListFilter } from "@components/CoffeeListFilter";
 
 import { CoffeeData } from "@data/coffeeData";
 import { CoffeeDTO, CoffeeItemDTO } from "@dtos/CoffeeDTO";
+import { SectionHeader } from "@components/SectionHeader";
 
 const SectionListAnimated = Animated.createAnimatedComponent(
   SectionList<CoffeeItemDTO, CoffeeDTO>
@@ -104,6 +105,9 @@ export function Home() {
         onScroll={scrollHandler}
         renderItem={({ item }) => (
           <Text style={{ height: 200 }}>{item.title}</Text>
+        )}
+        renderSectionHeader={({ section }) => (
+          <SectionHeader title={section.title} />
         )}
         ListHeaderComponent={() => (
           <>
