@@ -1,6 +1,7 @@
 export const THEME = {
   COLOR: {
     WHITE: "#FFFFFF",
+    BLACK: "#000000",
 
     GRAY_100: "#272221",
     GRAY_200: "#403937",
