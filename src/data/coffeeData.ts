@@ -13,7 +13,7 @@ import Irish from "@assets/irlandes.svg";
 
 import { CoffeeDTO } from "@dtos/CoffeeDTO";
 
-export const coffeeData: CoffeeDTO[] = [
+export const CoffeeData: CoffeeDTO[] = [
   {
     title: "Tradicionais",
     data: [

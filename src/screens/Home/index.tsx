@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Text, View, StatusBar } from "react-native";
+import { Text, StatusBar, SectionList } from "react-native";
 import Animated, {
   runOnJS,
   useAnimatedScrollHandler,
@@ -12,6 +12,14 @@ import { styles } from "./styles";
 import { Header } from "@components/Header";
 import { FilterInput } from "@components/FilterInput";
 import { BestCoffeeList } from "@components/BestCoffeeList";
+import { CoffeeListFilter } from "@components/CoffeeListFilter";
+
+import { CoffeeData } from "@data/coffeeData";
+import { CoffeeDTO, CoffeeItemDTO } from "@dtos/CoffeeDTO";
+
+const SectionListAnimated = Animated.createAnimatedComponent(
+  SectionList<CoffeeItemDTO, CoffeeDTO>
+);
 
 export function Home() {
   const scrollY = useSharedValue(0);
@@ -20,6 +28,7 @@ export function Home() {
   const [filterInputHeight, setFilterInputHeight] = useState(0);
   const [bestCoffeeHeight, setBestCoffeeHeight] = useState(0);
   const [totalHeight, setTotalHeight] = useState(0);
+  const [indexSelected, setIndexSelected] = useState(0);
 
   const [statusBarStyle, setStatusBarStyle] = useState<
     "light-content" | "dark-content"
@@ -46,12 +55,13 @@ export function Home() {
       right: 0,
       opacity: shouldBeFixed ? 1 : 0,
       display: shouldBeFixed ? "flex" : "none",
-      backgroundColor: "red",
-      paddingHorizontal: 24,
-      paddingVertical: 32,
       marginTop: headerHeight,
     };
   });
+
+  function handleFilterPress(value: number) {
+    setIndexSelected(value);
+  }
 
   useEffect(() => {
     StatusBar.setBarStyle(statusBarStyle);
@@ -72,7 +82,10 @@ export function Home() {
       />
 
       <Animated.View style={fixedFilter}>
-        <Text>Nossos cafés</Text>
+        <CoffeeListFilter
+          onPress={(value) => handleFilterPress(value)}
+          index={indexSelected}
+        />
       </Animated.View>
 
       <Header
@@ -84,12 +97,14 @@ export function Home() {
         totalHeight={totalHeight}
       />
 
-      <Animated.FlatList
-        data={["1", "2", "3", "5", "asd", "adasda"]}
-        keyExtractor={(item) => item}
+      <SectionListAnimated
+        sections={CoffeeData}
+        keyExtractor={(item, index) => String(item.id)}
         style={styles.container}
         onScroll={scrollHandler}
-        renderItem={() => <Text style={{ height: 200 }}>ADB</Text>}
+        renderItem={({ item }) => (
+          <Text style={{ height: 200 }}>{item.title}</Text>
+        )}
         ListHeaderComponent={() => (
           <>
             <FilterInput
@@ -107,15 +122,10 @@ export function Home() {
               setBestCoffeeHeight={(value) => setBestCoffeeHeight(value)}
             />
 
-            <View
-              style={{
-                backgroundColor: "red",
-                paddingHorizontal: 24,
-                paddingVertical: 32,
-              }}
-            >
-              <Text>Nossos cafés</Text>
-            </View>
+            <CoffeeListFilter
+              onPress={(value) => handleFilterPress(value)}
+              index={indexSelected}
+            />
           </>
         )}
       />
