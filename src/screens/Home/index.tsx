@@ -13,10 +13,11 @@ import { Header } from "@components/Header";
 import { FilterInput } from "@components/FilterInput";
 import { BestCoffeeList } from "@components/BestCoffeeList";
 import { CoffeeListFilter } from "@components/CoffeeListFilter";
+import { SectionHeader } from "@components/SectionHeader";
+import { SectionItem } from "@components/SectionItem";
 
 import { CoffeeData } from "@data/coffeeData";
 import { CoffeeDTO, CoffeeItemDTO } from "@dtos/CoffeeDTO";
-import { SectionHeader } from "@components/SectionHeader";
 
 const SectionListAnimated = Animated.createAnimatedComponent(
   SectionList<CoffeeItemDTO, CoffeeDTO>
@@ -103,9 +104,8 @@ export function Home() {
         keyExtractor={(item, index) => String(item.id)}
         style={styles.container}
         onScroll={scrollHandler}
-        renderItem={({ item }) => (
-          <Text style={{ height: 200 }}>{item.title}</Text>
-        )}
+        contentContainerStyle={{ gap: 20, }}
+        renderItem={({ item }) => <SectionItem coffee={item} />}
         renderSectionHeader={({ section }) => (
           <SectionHeader title={section.title} />
         )}
