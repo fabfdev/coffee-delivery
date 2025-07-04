@@ -12,12 +12,18 @@ import { styles } from "./styles";
 import { Header } from "@components/Header";
 import { FilterInput } from "@components/FilterInput";
 import { BestCoffee } from "@components/BestCoffee";
+import { BestCoffeeData } from "@data/bestCoffeeData";
+
+const TOP_SPACING_BEST_COFFEE = 80;
 
 export function Home() {
   const scrollY = useSharedValue(0);
 
   const [headerHeight, setHeaderHeight] = useState(0);
   const [filterInputHeight, setFilterInputHeight] = useState(0);
+  const [bestCoffeeHeight, setBestCoffeeHeight] = useState(0);
+  const [totalHeight, setTotalHeight] = useState(0);
+
   const [statusBarStyle, setStatusBarStyle] = useState<
     "light-content" | "dark-content"
   >("light-content");
@@ -29,7 +35,7 @@ export function Home() {
   });
 
   const fixedFilter = useAnimatedStyle(() => {
-    const shouldBeFixed = scrollY.value > filterInputHeight;
+    const shouldBeFixed = scrollY.value > totalHeight;
     ("worklet");
     if (shouldBeFixed) {
       runOnJS(setStatusBarStyle)("dark-content");
@@ -54,6 +60,11 @@ export function Home() {
     StatusBar.setBarStyle(statusBarStyle);
   }, [statusBarStyle]);
 
+  useEffect(() => {
+      const newTotalHeight = filterInputHeight + bestCoffeeHeight;
+      setTotalHeight(newTotalHeight);
+  }, [filterInputHeight, bestCoffeeHeight]);
+
   return (
     <>
       <StatusBar
@@ -73,7 +84,7 @@ export function Home() {
           const { height } = event.nativeEvent.layout;
           setHeaderHeight(height);
         }}
-        filterInputHeight={filterInputHeight}
+        totalHeight={totalHeight}
       />
 
       <Animated.FlatList
@@ -90,7 +101,29 @@ export function Home() {
                 const { height } = event.nativeEvent.layout;
                 setFilterInputHeight(height);
               }}
-              filterInputHeight={filterInputHeight}
+              totalHeight={totalHeight}
+            />
+
+            <FlatList
+              data={BestCoffeeData}
+              keyExtractor={(item) => String(item.id)}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              renderItem={({ item }) => <BestCoffee item={item} />}
+              onLayout={(event) => {
+                const { height } = event.nativeEvent.layout;
+                setBestCoffeeHeight(height - TOP_SPACING_BEST_COFFEE);
+              }}
+              style={{
+                marginTop: TOP_SPACING_BEST_COFFEE * -1, // Negative margin to overlap FilterInput
+                zIndex: 1,
+                paddingHorizontal: 24,
+                paddingBottom: 24,
+              }}
+              contentContainerStyle={{
+                paddingRight: 24, // Extra padding for last item
+                gap: 20,
+              }}
             />
 
             <View

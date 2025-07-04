@@ -16,14 +16,14 @@ import { ComponentProps } from "react";
 
 type Props = ComponentProps<typeof Animated.View> & {
   scrollY: SharedValue<number>;
-  filterInputHeight: number;
+  totalHeight: number;
   onLayout?: (event: any) => void;
 };
 
-export function FilterInput({ scrollY, filterInputHeight, onLayout }: Props) {
+export function FilterInput({ scrollY, totalHeight, onLayout }: Props) {
   const containerStyle = useAnimatedStyle(() => {
     return {
-      opacity: interpolate(scrollY.value, [0, filterInputHeight], [1, 0]),
+      opacity: interpolate(scrollY.value, [0, totalHeight], [1, 0]),
     };
   });
 

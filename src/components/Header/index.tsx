@@ -13,16 +13,16 @@ import { THEME } from "@styles/theme";
 
 type Props = ComponentProps<typeof Animated.View> & {
   scrollY: SharedValue<number>;
-  filterInputHeight: number;
+  totalHeight: number;
   onLayout?: (event: any) => void;
 };
 
-export function Header({ scrollY, onLayout, filterInputHeight }: Props) {
+export function Header({ scrollY, onLayout, totalHeight }: Props) {
   const headerStyle = useAnimatedStyle(() => {
     return {
       backgroundColor: interpolateColor(
         scrollY.value,
-        [20, filterInputHeight],
+        [20, totalHeight],
         [THEME.COLOR.GRAY_100, THEME.COLOR.WHITE]
       ),
     };
@@ -31,7 +31,7 @@ export function Header({ scrollY, onLayout, filterInputHeight }: Props) {
     return {
       color: interpolateColor(
         scrollY.value,
-        [20, filterInputHeight],
+        [20, totalHeight],
         [THEME.COLOR.GRAY_900, THEME.COLOR.GRAY_200]
       ),
     };
