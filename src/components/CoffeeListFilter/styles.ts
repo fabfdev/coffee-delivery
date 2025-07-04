@@ -8,6 +8,10 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     paddingHorizontal: 24,
     gap: 8,
+    shadowColor: THEME.COLOR.BLACK,
+    shadowRadius: 2,
+    shadowOffset: { width: 0, height: 4, },
+    shadowOpacity: 0.1,
   },
   title: {
     fontFamily: THEME.FONTS.BALOO_BOLD,
