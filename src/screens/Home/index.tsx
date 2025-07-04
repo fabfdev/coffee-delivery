@@ -19,6 +19,8 @@ const TOP_SPACING_BEST_COFFEE = 80;
 export function Home() {
   const scrollY = useSharedValue(0);
 
+  const bestCoffeeScrollX = useSharedValue(0);
+
   const [headerHeight, setHeaderHeight] = useState(0);
   const [filterInputHeight, setFilterInputHeight] = useState(0);
   const [bestCoffeeHeight, setBestCoffeeHeight] = useState(0);
@@ -61,8 +63,8 @@ export function Home() {
   }, [statusBarStyle]);
 
   useEffect(() => {
-      const newTotalHeight = filterInputHeight + bestCoffeeHeight;
-      setTotalHeight(newTotalHeight);
+    const newTotalHeight = filterInputHeight + bestCoffeeHeight;
+    setTotalHeight(newTotalHeight);
   }, [filterInputHeight, bestCoffeeHeight]);
 
   return (
@@ -107,9 +109,18 @@ export function Home() {
             <FlatList
               data={BestCoffeeData}
               keyExtractor={(item) => String(item.id)}
+              onScroll={(event) =>
+                (bestCoffeeScrollX.value = event.nativeEvent.contentOffset.x)
+              }
               horizontal
               showsHorizontalScrollIndicator={false}
-              renderItem={({ item }) => <BestCoffee item={item} />}
+              renderItem={({ item, index }) => (
+                <BestCoffee
+                  scrollX={bestCoffeeScrollX}
+                  item={item}
+                  index={index}
+                />
+              )}
               onLayout={(event) => {
                 const { height } = event.nativeEvent.layout;
                 setBestCoffeeHeight(height - TOP_SPACING_BEST_COFFEE);
