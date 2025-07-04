@@ -46,6 +46,8 @@ export const styles = StyleSheet.create({
     color: THEME.COLOR.GRAY_200,
     fontFamily: THEME.FONTS.BALOO_BOLD,
     fontSize: 20,
+    width: "100%",
+    textAlign: "center",
   },
   description: {
     color: THEME.COLOR.GRAY_400,

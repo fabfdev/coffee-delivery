@@ -13,6 +13,7 @@ export const styles = StyleSheet.create({
     fontFamily: THEME.FONTS.BALOO_BOLD,
     fontSize: 20,
     color: THEME.COLOR.WHITE,
+    flex: 1,
   },
   containerInput: {
     height: 42,
