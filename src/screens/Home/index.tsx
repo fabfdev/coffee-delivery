@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
-import { Text, View, StatusBar, FlatList } from "react-native";
+import { Text, View, StatusBar } from "react-native";
 import Animated, {
-  interpolate,
   runOnJS,
   useAnimatedScrollHandler,
   useAnimatedStyle,
@@ -12,15 +11,10 @@ import { styles } from "./styles";
 
 import { Header } from "@components/Header";
 import { FilterInput } from "@components/FilterInput";
-import { BestCoffee } from "@components/BestCoffee";
-import { BestCoffeeData } from "@data/bestCoffeeData";
-
-const TOP_SPACING_BEST_COFFEE = 80;
+import { BestCoffeeList } from "@components/BestCoffeeList";
 
 export function Home() {
   const scrollY = useSharedValue(0);
-
-  const bestCoffeeScrollX = useSharedValue(0);
 
   const [headerHeight, setHeaderHeight] = useState(0);
   const [filterInputHeight, setFilterInputHeight] = useState(0);
@@ -56,18 +50,6 @@ export function Home() {
       paddingHorizontal: 24,
       paddingVertical: 32,
       marginTop: headerHeight,
-    };
-  });
-
-  const bestCoffeeAnimatedStyle = useAnimatedStyle(() => {
-    const opacity = interpolate(
-      scrollY.value,
-      [0, totalHeight],
-      [1, 0],
-      "clamp"
-    );
-    return {
-      opacity: opacity,
     };
   });
 
@@ -119,38 +101,10 @@ export function Home() {
               totalHeight={totalHeight}
             />
 
-            <Animated.FlatList
-              data={BestCoffeeData}
-              keyExtractor={(item) => String(item.id)}
-              onScroll={(event) => {
-                bestCoffeeScrollX.value = event.nativeEvent.contentOffset.x;
-              }}
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              renderItem={({ item, index }) => (
-                <BestCoffee
-                  scrollX={bestCoffeeScrollX}
-                  item={item}
-                  index={index}
-                />
-              )}
-              onLayout={(event) => {
-                const { height } = event.nativeEvent.layout;
-                setBestCoffeeHeight(height - TOP_SPACING_BEST_COFFEE);
-              }}
-              style={[
-                {
-                  marginTop: TOP_SPACING_BEST_COFFEE * -1, // Negative margin to overlap FilterInput
-                  zIndex: 1,
-                  paddingHorizontal: 24,
-                  paddingBottom: 24,
-                },
-                bestCoffeeAnimatedStyle,
-              ]}
-              contentContainerStyle={{
-                paddingRight: 24, // Extra padding for last item
-                gap: 20,
-              }}
+            <BestCoffeeList
+              scrollY={scrollY}
+              totalHeight={totalHeight}
+              setBestCoffeeHeight={(value) => setBestCoffeeHeight(value)}
             />
 
             <View
