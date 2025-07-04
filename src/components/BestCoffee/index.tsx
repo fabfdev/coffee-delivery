@@ -30,11 +30,6 @@ export function BestCoffee({ scrollX, index, item }: Props) {
     const itemCenterPosition = index * ITEM_WIDTH + ITEM_CENTER;
 
     // Calcular a posição do item atual
-    /*const inputRange = [
-      (index - 1) * ITEM_WIDTH - CENTER_OFFSET,
-      index * ITEM_WIDTH - CENTER_OFFSET,
-      (index + 1) * ITEM_WIDTH - CENTER_OFFSET,
-    ];*/
     const inputRange = [
       itemCenterPosition - ITEM_WIDTH - SCREEN_CENTER, // Item anterior centralizado
       itemCenterPosition - SCREEN_CENTER, // Item atual centralizado
@@ -44,7 +39,7 @@ export function BestCoffee({ scrollX, index, item }: Props) {
     const scale = interpolate(
       scrollX.value,
       inputRange,
-      [0.7, 1, 0.7], // escala menor para os lados, maior para o centro
+      [0.8, 1.1, 0.8], // escala menor para os lados, maior para o centro
       "clamp"
     );
 
