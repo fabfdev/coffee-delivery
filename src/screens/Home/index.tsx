@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Text, View, StatusBar, FlatList } from "react-native";
 import Animated, {
+  interpolate,
   runOnJS,
   useAnimatedScrollHandler,
   useAnimatedStyle,
@@ -58,6 +59,18 @@ export function Home() {
     };
   });
 
+  const bestCoffeeAnimatedStyle = useAnimatedStyle(() => {
+    const opacity = interpolate(
+      scrollY.value,
+      [0, totalHeight],
+      [1, 0],
+      "clamp"
+    );
+    return {
+      opacity: opacity,
+    };
+  });
+
   useEffect(() => {
     StatusBar.setBarStyle(statusBarStyle);
   }, [statusBarStyle]);
@@ -106,12 +119,12 @@ export function Home() {
               totalHeight={totalHeight}
             />
 
-            <FlatList
+            <Animated.FlatList
               data={BestCoffeeData}
               keyExtractor={(item) => String(item.id)}
-              onScroll={(event) =>
-                (bestCoffeeScrollX.value = event.nativeEvent.contentOffset.x)
-              }
+              onScroll={(event) => {
+                bestCoffeeScrollX.value = event.nativeEvent.contentOffset.x;
+              }}
               horizontal
               showsHorizontalScrollIndicator={false}
               renderItem={({ item, index }) => (
@@ -125,12 +138,15 @@ export function Home() {
                 const { height } = event.nativeEvent.layout;
                 setBestCoffeeHeight(height - TOP_SPACING_BEST_COFFEE);
               }}
-              style={{
-                marginTop: TOP_SPACING_BEST_COFFEE * -1, // Negative margin to overlap FilterInput
-                zIndex: 1,
-                paddingHorizontal: 24,
-                paddingBottom: 24,
-              }}
+              style={[
+                {
+                  marginTop: TOP_SPACING_BEST_COFFEE * -1, // Negative margin to overlap FilterInput
+                  zIndex: 1,
+                  paddingHorizontal: 24,
+                  paddingBottom: 24,
+                },
+                bestCoffeeAnimatedStyle,
+              ]}
               contentContainerStyle={{
                 paddingRight: 24, // Extra padding for last item
                 gap: 20,
