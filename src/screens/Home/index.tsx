@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { StatusBar, SectionList } from "react-native";
 import Animated, {
   runOnJS,
@@ -25,6 +25,7 @@ const SectionListAnimated = Animated.createAnimatedComponent(
 
 export function Home() {
   const scrollY = useSharedValue(0);
+  const sectionListRef = useRef<SectionList<CoffeeItemDTO, CoffeeDTO>>(null);
 
   const [headerHeight, setHeaderHeight] = useState(0);
   const [filterInputHeight, setFilterInputHeight] = useState(0);
@@ -63,7 +64,17 @@ export function Home() {
 
   function handleFilterPress(value: number) {
     setIndexSelected(value);
-    
+
+    // Scroll para a seção selecionada
+    if (sectionListRef.current && value < CoffeeData.length) {
+      sectionListRef.current.scrollToLocation({
+        sectionIndex: value,
+        itemIndex: 1,
+        animated: true,
+        viewPosition: 0, // 0 = topo da tela
+        viewOffset: headerHeight, // Offset para compensar o header fixo
+      });
+    }
   }
 
   const onViewableItemsChanged = useCallback(({ viewableItems }: { viewableItems: any[] }) => {
@@ -77,7 +88,7 @@ export function Home() {
           section => section.title === firstVisibleItem.section.title
         );
         if (sectionIndex !== -1) {
-          setIndexSelected(sectionIndex);
+          // setIndexSelected(sectionIndex);
         }
       }
     }
@@ -107,7 +118,7 @@ export function Home() {
 
       <Animated.View style={fixedFilter}>
         <CoffeeListFilter
-          onPress={(value) => handleFilterPress(value)}
+          onPress={handleFilterPress}
           index={indexSelected}
         />
       </Animated.View>
@@ -122,6 +133,7 @@ export function Home() {
       />
 
       <SectionListAnimated
+        ref={sectionListRef}
         sections={CoffeeData}
         keyExtractor={(item, index) => String(item.id)}
         style={styles.container}
@@ -151,7 +163,7 @@ export function Home() {
             />
 
             <CoffeeListFilter
-              onPress={(value) => handleFilterPress(value)}
+              onPress={handleFilterPress}
               index={indexSelected}
             />
           </>
