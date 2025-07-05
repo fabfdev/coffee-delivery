@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { Text, StatusBar, SectionList } from "react-native";
+import { useState, useEffect, useCallback } from "react";
+import { StatusBar, SectionList } from "react-native";
 import Animated, {
   runOnJS,
   useAnimatedScrollHandler,
@@ -63,7 +63,29 @@ export function Home() {
 
   function handleFilterPress(value: number) {
     setIndexSelected(value);
+    
   }
+
+  const onViewableItemsChanged = useCallback(({ viewableItems }: { viewableItems: any[] }) => {
+    if (viewableItems.length > 0) {
+      // Pega o primeiro item visível
+      const firstVisibleItem = viewableItems[0];
+      
+      // Se for um header de seção, pega o índice da seção
+      if (/*firstVisibleItem.item !== null && */firstVisibleItem.section) {
+        const sectionIndex = CoffeeData.findIndex(
+          section => section.title === firstVisibleItem.section.title
+        );
+        if (sectionIndex !== -1) {
+          setIndexSelected(sectionIndex);
+        }
+      }
+    }
+  }, []);
+
+  const viewabilityConfig = {
+    itemVisiblePercentThreshold: 100, // 50% do item precisa estar visível
+  };
 
   useEffect(() => {
     StatusBar.setBarStyle(statusBarStyle);
@@ -109,6 +131,8 @@ export function Home() {
         renderSectionHeader={({ section }) => (
           <SectionHeader title={section.title} />
         )}
+        onViewableItemsChanged={onViewableItemsChanged}
+        viewabilityConfig={viewabilityConfig}
         ListHeaderComponent={() => (
           <>
             <FilterInput
