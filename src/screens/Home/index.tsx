@@ -1,11 +1,18 @@
 import { useState, useEffect, useCallback, useRef } from "react";
-import { StatusBar, SectionList } from "react-native";
+import {
+  StatusBar,
+  SectionList,
+  View,
+  Text,
+  TouchableOpacity,
+} from "react-native";
 import Animated, {
   runOnJS,
   useAnimatedScrollHandler,
   useAnimatedStyle,
   useSharedValue,
 } from "react-native-reanimated";
+import { ShoppingCartIcon, ArrowRightIcon } from "phosphor-react-native";
 
 import { styles } from "./styles";
 
@@ -18,6 +25,7 @@ import { SectionItem } from "@components/SectionItem";
 
 import { CoffeeData } from "@data/coffeeData";
 import { CoffeeDTO, CoffeeItemDTO } from "@dtos/CoffeeDTO";
+import { THEME } from "@styles/theme";
 
 const SectionListAnimated = Animated.createAnimatedComponent(
   SectionList<CoffeeItemDTO, CoffeeDTO>
@@ -77,22 +85,25 @@ export function Home() {
     }
   }
 
-  const onViewableItemsChanged = useCallback(({ viewableItems }: { viewableItems: any[] }) => {
-    if (viewableItems.length > 0) {
-      // Pega o primeiro item visível
-      const firstVisibleItem = viewableItems[0];
-      
-      // Se for um header de seção, pega o índice da seção
-      if (/*firstVisibleItem.item !== null && */firstVisibleItem.section) {
-        const sectionIndex = CoffeeData.findIndex(
-          section => section.title === firstVisibleItem.section.title
-        );
-        if (sectionIndex !== -1) {
-          // setIndexSelected(sectionIndex);
+  const onViewableItemsChanged = useCallback(
+    ({ viewableItems }: { viewableItems: any[] }) => {
+      if (viewableItems.length > 0) {
+        // Pega o primeiro item visível
+        const firstVisibleItem = viewableItems[0];
+
+        // Se for um header de seção, pega o índice da seção
+        if (/*firstVisibleItem.item !== null && */ firstVisibleItem.section) {
+          const sectionIndex = CoffeeData.findIndex(
+            (section) => section.title === firstVisibleItem.section.title
+          );
+          if (sectionIndex !== -1) {
+            // setIndexSelected(sectionIndex);
+          }
         }
       }
-    }
-  }, []);
+    },
+    []
+  );
 
   const viewabilityConfig = {
     itemVisiblePercentThreshold: 100, // 50% do item precisa estar visível
@@ -117,10 +128,7 @@ export function Home() {
       />
 
       <Animated.View style={fixedFilter}>
-        <CoffeeListFilter
-          onPress={handleFilterPress}
-          index={indexSelected}
-        />
+        <CoffeeListFilter onPress={handleFilterPress} index={indexSelected} />
       </Animated.View>
 
       <Header
@@ -138,7 +146,7 @@ export function Home() {
         keyExtractor={(item, index) => String(item.id)}
         style={styles.container}
         onScroll={scrollHandler}
-        contentContainerStyle={{ gap: 20, }}
+        contentContainerStyle={{ gap: 20 }}
         renderItem={({ item }) => <SectionItem coffee={item} />}
         renderSectionHeader={({ section }) => (
           <SectionHeader title={section.title} />
@@ -169,6 +177,83 @@ export function Home() {
           </>
         )}
       />
+
+      <View
+        style={{
+          flexDirection: "row",
+          paddingBottom: 32,
+          paddingTop: 24,
+          paddingHorizontal: 24,
+        }}
+      >
+        <View
+          style={{
+            backgroundColor: THEME.COLOR.GRAY_500,
+            padding: 8,
+            borderRadius: 8,
+            marginRight: 12,
+            justifyContent: "center",
+            alignItems: "center",
+            position: "relative",
+          }}
+        >
+          <View
+            style={{
+              backgroundColor: THEME.COLOR.PURPLE,
+              borderRadius: 10,
+              width: 20,
+              height: 20,
+              alignItems: "center",
+              justifyContent: "center",
+              position: "absolute",
+              top: -10,
+              right: -10,
+            }}
+          >
+            <Text style={{ fontSize: 12, color: THEME.COLOR.WHITE }}>1</Text>
+          </View>
+          <ShoppingCartIcon size={20} color={THEME.COLOR.WHITE} />
+        </View>
+        <View style={{ justifyContent: "center", flex: 1 }}>
+          <Text
+            style={{
+              fontFamily: THEME.FONTS.REGULAR,
+              color: THEME.COLOR.GRAY_400,
+              fontSize: 14,
+            }}
+          >
+            1 café Irlandês de 227ml
+          </Text>
+          <Text
+            style={{
+              fontFamily: THEME.FONTS.REGULAR,
+              color: THEME.COLOR.GRAY_400,
+              fontSize: 14,
+            }}
+          >
+            adicionado ao carrinho
+          </Text>
+        </View>
+        <TouchableOpacity
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            gap: 4,
+          }}
+        >
+          <Text
+            style={{
+              fontFamily: THEME.FONTS.BOLD,
+              textTransform: "uppercase",
+              color: THEME.COLOR.PURPLE,
+              fontSize: 12,
+            }}
+          >
+            ver
+          </Text>
+          <ArrowRightIcon size={16} color={THEME.COLOR.PURPLE} />
+        </TouchableOpacity>
+      </View>
     </>
   );
 }

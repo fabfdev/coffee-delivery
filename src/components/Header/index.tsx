@@ -1,5 +1,5 @@
 import { ComponentProps } from "react";
-import { Text, TextInput, View } from "react-native";
+import { View } from "react-native";
 import { MapPinIcon, ShoppingCartIcon } from "phosphor-react-native";
 import Animated, {
   interpolateColor,
