@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import {
   Roboto_400Regular,
   Roboto_700Bold,
@@ -9,8 +9,7 @@ import {
   useFonts as useFontsBaloo,
 } from "@expo-google-fonts/baloo-2";
 
-import { THEME } from "@styles/theme";
-import { Home } from "@screens/Home";
+import { Routes } from "@routes/index";
 
 export default function App() {
   const [fontsRobotoLoaded] = useFonts({ Roboto_400Regular, Roboto_700Bold });
@@ -21,8 +20,8 @@ export default function App() {
   }
 
   return (
-    <View style={{ flex: 1, backgroundColor: THEME.COLOR.WHITE }}>
-      <Home />
-    </View>
+    <GestureHandlerRootView>
+      <Routes />
+    </GestureHandlerRootView>
   );
 }

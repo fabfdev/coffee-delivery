@@ -1,17 +1,18 @@
-import { Text, View } from "react-native";
+import { ComponentProps } from "react";
+import { Text, TouchableOpacity, View } from "react-native";
 
 import { styles } from "./styles";
 
 import { CoffeeItemDTO } from "@dtos/CoffeeDTO";
 
-type Props = {
+type Props = ComponentProps<typeof TouchableOpacity> & {
   coffee: CoffeeItemDTO;
 };
 
-export function SectionItem({ coffee }: Props) {
+export function SectionItem({ coffee, ...rest }: Props) {
   const CoffeeImage = coffee.image;
   return (
-    <View style={styles.wrapper}>
+    <TouchableOpacity style={styles.wrapper} {...rest}>
       <CoffeeImage style={styles.image} />
       <View style={styles.container}>
         <View style={styles.dataContainer}>
@@ -23,6 +24,6 @@ export function SectionItem({ coffee }: Props) {
           </View>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }

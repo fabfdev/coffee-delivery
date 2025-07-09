@@ -1,18 +1,12 @@
 import { useState, useEffect, useCallback, useRef } from "react";
-import {
-  StatusBar,
-  SectionList,
-  View,
-  Text,
-  TouchableOpacity,
-} from "react-native";
+import { StatusBar, SectionList } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import Animated, {
   runOnJS,
   useAnimatedScrollHandler,
   useAnimatedStyle,
   useSharedValue,
 } from "react-native-reanimated";
-import { ShoppingCartIcon, ArrowRightIcon } from "phosphor-react-native";
 
 import { styles } from "./styles";
 
@@ -22,10 +16,12 @@ import { BestCoffeeList } from "@components/BestCoffeeList";
 import { CoffeeListFilter } from "@components/CoffeeListFilter";
 import { SectionHeader } from "@components/SectionHeader";
 import { SectionItem } from "@components/SectionItem";
+import { CartSection } from "@components/CartSection";
 
 import { CoffeeData } from "@data/coffeeData";
 import { CoffeeDTO, CoffeeItemDTO } from "@dtos/CoffeeDTO";
-import { THEME } from "@styles/theme";
+
+import { AppNavigatorRoutesProps } from "@routes/app.routes";
 
 const SectionListAnimated = Animated.createAnimatedComponent(
   SectionList<CoffeeItemDTO, CoffeeDTO>
@@ -40,6 +36,8 @@ export function Home() {
   const [bestCoffeeHeight, setBestCoffeeHeight] = useState(0);
   const [totalHeight, setTotalHeight] = useState(0);
   const [indexSelected, setIndexSelected] = useState(0);
+
+  const navigator = useNavigation<AppNavigatorRoutesProps>();
 
   const [statusBarStyle, setStatusBarStyle] = useState<
     "light-content" | "dark-content"
@@ -109,6 +107,10 @@ export function Home() {
     itemVisiblePercentThreshold: 100, // 50% do item precisa estar visível
   };
 
+  function handleCoffeePress() {
+    navigator.navigate("product");
+  }
+
   useEffect(() => {
     StatusBar.setBarStyle(statusBarStyle);
   }, [statusBarStyle]);
@@ -147,7 +149,7 @@ export function Home() {
         style={styles.container}
         onScroll={scrollHandler}
         contentContainerStyle={{ gap: 20 }}
-        renderItem={({ item }) => <SectionItem coffee={item} />}
+        renderItem={({ item }) => <SectionItem coffee={item} onPress={handleCoffeePress} />}
         renderSectionHeader={({ section }) => (
           <SectionHeader title={section.title} />
         )}
@@ -178,82 +180,7 @@ export function Home() {
         )}
       />
 
-      <View
-        style={{
-          flexDirection: "row",
-          paddingBottom: 32,
-          paddingTop: 24,
-          paddingHorizontal: 24,
-        }}
-      >
-        <View
-          style={{
-            backgroundColor: THEME.COLOR.GRAY_500,
-            padding: 8,
-            borderRadius: 8,
-            marginRight: 12,
-            justifyContent: "center",
-            alignItems: "center",
-            position: "relative",
-          }}
-        >
-          <View
-            style={{
-              backgroundColor: THEME.COLOR.PURPLE,
-              borderRadius: 10,
-              width: 20,
-              height: 20,
-              alignItems: "center",
-              justifyContent: "center",
-              position: "absolute",
-              top: -10,
-              right: -10,
-            }}
-          >
-            <Text style={{ fontSize: 12, color: THEME.COLOR.WHITE }}>1</Text>
-          </View>
-          <ShoppingCartIcon size={20} color={THEME.COLOR.WHITE} />
-        </View>
-        <View style={{ justifyContent: "center", flex: 1 }}>
-          <Text
-            style={{
-              fontFamily: THEME.FONTS.REGULAR,
-              color: THEME.COLOR.GRAY_400,
-              fontSize: 14,
-            }}
-          >
-            1 café Irlandês de 227ml
-          </Text>
-          <Text
-            style={{
-              fontFamily: THEME.FONTS.REGULAR,
-              color: THEME.COLOR.GRAY_400,
-              fontSize: 14,
-            }}
-          >
-            adicionado ao carrinho
-          </Text>
-        </View>
-        <TouchableOpacity
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            gap: 4,
-          }}
-        >
-          <Text
-            style={{
-              fontFamily: THEME.FONTS.BOLD,
-              textTransform: "uppercase",
-              color: THEME.COLOR.PURPLE,
-              fontSize: 12,
-            }}
-          >
-            ver
-          </Text>
-          <ArrowRightIcon size={16} color={THEME.COLOR.PURPLE} />
-        </TouchableOpacity>
-      </View>
+      <CartSection />
     </>
   );
 }
