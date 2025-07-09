@@ -29,13 +29,11 @@ export function CoffeeListItem({ index, item, onPress, isChecked }: Props) {
   const animatedStyle = useAnimatedStyle(() => {
     return {
       transform: [{ scale: scale.value }],
-      backgroundColor: withTiming(
-        interpolateColor(
+      backgroundColor: interpolateColor(
           checked.value,
           [0, 1],
           [THEME.COLOR.WHITE, THEME.COLOR.PURPLE]
-        )
-      ),
+        ),
     };
   });
 
