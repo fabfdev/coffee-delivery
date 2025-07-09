@@ -1,5 +1,11 @@
 import { useEffect, useState } from "react";
 import { Image, StatusBar, Text, TouchableOpacity, View } from "react-native";
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withRepeat,
+  withTiming,
+} from "react-native-reanimated";
 import {
   ArrowLeftIcon,
   ShoppingCartIcon,
@@ -19,6 +25,14 @@ import { CoffeeSelectionItem } from "@components/CoffeeSelectionItem";
 export function Product() {
   const [coffeeSize, setCoffeeSize] = useState(0);
 
+  const smokeOpacity = useSharedValue(1);
+
+  const animatedSmokeStyle = useAnimatedStyle(() => {
+    return {
+      opacity: smokeOpacity.value,
+    };
+  });
+
   function handleCoffeeSizeSelection(value: number) {
     setCoffeeSize(value);
   }
@@ -29,6 +43,14 @@ export function Product() {
 
   useEffect(() => {
     StatusBar.setBarStyle("light-content");
+  }, []);
+
+  useEffect(() => {
+    smokeOpacity.value = withRepeat(
+      withTiming(0, { duration: 1200 }),
+      -1,
+      true
+    );
   }, []);
 
   return (
@@ -53,7 +75,9 @@ export function Product() {
       </View>
 
       <View style={styles.coffeeContainer}>
-        <Smoke style={styles.smoke} />
+        <Animated.View style={animatedSmokeStyle}>
+          <Smoke style={styles.smoke} />
+        </Animated.View>
         <Image source={coffeeImg} style={styles.coffeeImg} />
       </View>
 

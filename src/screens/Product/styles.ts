@@ -6,7 +6,7 @@ export const styles = StyleSheet.create({
   container: {
     backgroundColor: THEME.COLOR.GRAY_100,
     paddingTop: 36,
-    height: "100%",
+    flex: 1,
   },
   menu: {
     flexDirection: "row",
@@ -14,6 +14,7 @@ export const styles = StyleSheet.create({
   },
   mainContent: {
     paddingHorizontal: 24,
+    paddingBottom: 20,
   },
   tag: {
     alignSelf: "flex-start",
@@ -55,12 +56,15 @@ export const styles = StyleSheet.create({
   },
   coffeeContainer: {
     alignItems: "center",
-  },
-  smoke: {
+    marginBottom: -80,
     zIndex: 2,
   },
+  smoke: {
+    top: 50,
+    zIndex: 3,
+  },
   coffeeImg: {
-    zIndex: 1,
+    zIndex: 2,
   },
   coffeeSizeText: {
     color: THEME.COLOR.GRAY_400,
@@ -70,13 +74,15 @@ export const styles = StyleSheet.create({
   },
   coffeeSizeContainer: {
     backgroundColor: THEME.COLOR.WHITE,
-    flex: 1,
     paddingHorizontal: 24,
-    paddingTop: 36,
+    justifyContent: "flex-end",
+    paddingBottom: 44,
+    flex: 1,
   },
   coffeeSelectionContainer: {
     flexDirection: "row",
     gap: 8,
+    alignItems: "center",
   },
   addToCardContainer: {
     flexDirection: "row",
