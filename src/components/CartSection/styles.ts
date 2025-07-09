@@ -8,6 +8,7 @@ export const styles = StyleSheet.create({
     paddingBottom: 32,
     paddingTop: 24,
     paddingHorizontal: 24,
+    backgroundColor: THEME.COLOR.WHITE,
   },
   cartContainer: {
     backgroundColor: THEME.COLOR.GRAY_500,

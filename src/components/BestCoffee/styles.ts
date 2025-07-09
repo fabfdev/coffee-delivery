@@ -9,7 +9,7 @@ export const styles = StyleSheet.create({
   container: {
     width: 208,
     minHeight: 242,
-    backgroundColor: THEME.COLOR.GRAY_800,
+    backgroundColor: THEME.COLOR.GRAY_900,
     justifyContent: "center",
     alignItems: "center",
     borderTopStartRadius: 8,
