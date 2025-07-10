@@ -41,7 +41,7 @@ export function Home() {
 
   const [statusBarStyle, setStatusBarStyle] = useState<
     "light-content" | "dark-content"
-  >("light-content");
+  >("dark-content");
 
   const scrollHandler = useAnimatedScrollHandler({
     onScroll: (event) => {

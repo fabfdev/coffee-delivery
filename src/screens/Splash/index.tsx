@@ -2,11 +2,15 @@ import { useEffect, useState } from "react";
 import { Dimensions, StatusBar } from "react-native";
 import Animated, {
   interpolateColor,
+  runOnJS,
   useAnimatedStyle,
   useSharedValue,
   withDelay,
   withTiming,
 } from "react-native-reanimated";
+import { useNavigation } from "@react-navigation/native";
+
+import { AppNavigatorRoutesProps } from "@routes/app.routes";
 
 import { styles } from "./styles";
 
@@ -14,8 +18,6 @@ import { THEME } from "@styles/theme";
 
 import AppIcon from "@assets/app_icon.svg";
 import Logo from "@assets/logo.svg";
-
-const { width: screenWidth } = Dimensions.get("window");
 
 export function Splash() {
   const backgroundProperty = useSharedValue(0);
@@ -26,6 +28,8 @@ export function Splash() {
   const [appIconWidth, setAppIconWidth] = useState(0);
   const [appIconPosition, setAppIconPosition] = useState(0);
   const [logoWidth, setLogoWidth] = useState(0);
+
+  const navigator = useNavigation<AppNavigatorRoutesProps>();
 
   const animatedStyle = useAnimatedStyle(() => {
     return {
@@ -50,6 +54,10 @@ export function Splash() {
     };
   });
 
+  function onAnimationComplete() {
+    navigator.navigate("home");
+  }
+
   useEffect(() => {
     StatusBar.setBarStyle("light-content");
   }, []);
@@ -70,7 +78,12 @@ export function Splash() {
   useEffect(() => {
     opacityLogoProperty.value = withDelay(
       3600,
-      withTiming(1, { duration: 1000 })
+      withTiming(1, { duration: 1000 }, (finished) => {
+        "worklet"
+        if (finished) {
+            runOnJS(onAnimationComplete)()
+        }
+      })
     );
   }, [logoWidth, appIconWidth, appIconPosition]);
 
