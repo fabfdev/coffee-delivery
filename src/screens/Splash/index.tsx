@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
-import { Dimensions, StatusBar, Text, View } from "react-native";
+import { Dimensions, StatusBar } from "react-native";
 import Animated, {
-  interpolate,
   interpolateColor,
-  Keyframe,
   useAnimatedStyle,
   useSharedValue,
   withDelay,
@@ -22,8 +20,11 @@ const { width: screenWidth } = Dimensions.get("window");
 export function Splash() {
   const backgroundProperty = useSharedValue(0);
   const opacityProperty = useSharedValue(0);
+  const appIconPositionProperty = useSharedValue(0);
   const opacityLogoProperty = useSharedValue(0);
 
+  const [appIconWidth, setAppIconWidth] = useState(0);
+  const [appIconPosition, setAppIconPosition] = useState(0);
   const [logoWidth, setLogoWidth] = useState(0);
 
   const animatedStyle = useAnimatedStyle(() => {
@@ -39,6 +40,7 @@ export function Splash() {
   const appIconAnimated = useAnimatedStyle(() => {
     return {
       opacity: opacityProperty.value,
+      transform: [{ translateX: appIconPositionProperty.value }],
     };
   });
 
@@ -57,22 +59,30 @@ export function Splash() {
       600,
       withTiming(1, { duration: 1000 })
     );
-  }, [logoWidth]);
+  }, [logoWidth, appIconWidth, appIconPosition]);
 
   useEffect(() => {
     opacityProperty.value = withDelay(1600, withTiming(1, { duration: 1000 }));
-  }, [logoWidth]);
+    appIconPositionProperty.value = ((appIconPosition + appIconWidth / 2 + logoWidth / 2 + 6) / 2) - appIconWidth
+    appIconPositionProperty.value = withDelay(3000, withTiming(0, { duration: 1000 }))
+  }, [logoWidth, appIconWidth, appIconPosition]);
 
   useEffect(() => {
     opacityLogoProperty.value = withDelay(
-      2600,
+      3600,
       withTiming(1, { duration: 1000 })
     );
-  }, [logoWidth]);
+  }, [logoWidth, appIconWidth, appIconPosition]);
 
   return (
     <Animated.View style={[styles.container, animatedStyle]}>
-      <Animated.View style={[styles.icon, appIconAnimated]}>
+      <Animated.View
+        style={[styles.icon, appIconAnimated]}
+        onLayout={(event) => {
+          setAppIconWidth(event.nativeEvent.layout.width);
+          setAppIconPosition(event.nativeEvent.layout.x);
+        }}
+      >
         <AppIcon />
       </Animated.View>
       <Animated.View
