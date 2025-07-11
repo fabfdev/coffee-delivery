@@ -8,7 +8,8 @@ import {
   View,
 } from "react-native";
 import { Swipeable } from "react-native-gesture-handler";
-
+import { useNavigation } from "@react-navigation/native";
+import Animated, { Layout, SlideInRight } from "react-native-reanimated";
 import { ArrowLeftIcon, TrashIcon } from "phosphor-react-native";
 
 import { styles } from "./styles";
@@ -16,18 +17,17 @@ import { styles } from "./styles";
 import { CartItem } from "@components/CartItem";
 
 import { CoffeeData } from "@data/coffeeData";
+import { AppNavigatorRoutesProps } from "@routes/app.routes";
 
 import { THEME } from "@styles/theme";
-import Animated, {
-  Layout,
-  SlideInRight,
-  SlideOutRight,
-} from "react-native-reanimated";
 
 export function Cart() {
-  const [data, setData] = useState([...CoffeeData[0].data, ...CoffeeData[1].data]);
-
   const swipeableRefs = useRef<Swipeable[]>([]);
+  const [data, setData] = useState([
+    ...CoffeeData[0].data,
+    ...CoffeeData[1].data,
+  ]);
+  const navigator = useNavigation<AppNavigatorRoutesProps>();
 
   function remove(id: number) {
     setData(data.filter((item) => item.id !== id));
@@ -42,6 +42,10 @@ export function Cart() {
       },
       { text: "Não", style: "cancel" },
     ]);
+  }
+
+  function handleConfirmation() {
+    navigator.navigate("confirmation");
   }
 
   useEffect(() => {
@@ -95,8 +99,13 @@ export function Cart() {
           <Text style={styles.subtotalPrice}>R$ 9,90</Text>
         </View>
 
-        <TouchableOpacity style={styles.buttonContainer}>
-          <Text style={styles.buttonTitle}>{"Confirmar pedido".toUpperCase()}</Text>
+        <TouchableOpacity
+          style={styles.buttonContainer}
+          onPress={handleConfirmation}
+        >
+          <Text style={styles.buttonTitle}>
+            {"Confirmar pedido".toUpperCase()}
+          </Text>
         </TouchableOpacity>
       </View>
     </View>
