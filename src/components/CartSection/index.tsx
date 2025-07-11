@@ -8,7 +8,11 @@ import { THEME } from "@styles/theme";
 
 import { styles } from "./styles";
 
-export function CartSection() {
+type Props = {
+  handleCart: () => void;
+};
+
+export function CartSection({ handleCart }: Props) {
   const cart = [
     {
       title: "café Irlandês de 227ml",
@@ -77,7 +81,7 @@ export function CartSection() {
         </Text>
         <Text style={styles.addedItemInfoText}>adicionado ao carrinho</Text>
       </Animated.View>
-      <TouchableOpacity style={styles.buttonContainer}>
+      <TouchableOpacity style={styles.buttonContainer} onPress={handleCart}>
         <Text style={styles.buttonText}>ver</Text>
         <ArrowRightIcon size={16} color={THEME.COLOR.PURPLE} />
       </TouchableOpacity>

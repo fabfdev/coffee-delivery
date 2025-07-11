@@ -111,6 +111,10 @@ export function Home() {
     navigator.navigate("product");
   }
 
+  function handleCart() {
+    navigator.navigate("cart");
+  }
+
   useEffect(() => {
     StatusBar.setBarStyle(statusBarStyle);
   }, [statusBarStyle]);
@@ -149,7 +153,9 @@ export function Home() {
         style={styles.container}
         onScroll={scrollHandler}
         contentContainerStyle={{ gap: 20 }}
-        renderItem={({ item }) => <SectionItem coffee={item} onPress={handleCoffeePress} />}
+        renderItem={({ item }) => (
+          <SectionItem coffee={item} onPress={handleCoffeePress} />
+        )}
         renderSectionHeader={({ section }) => (
           <SectionHeader title={section.title} />
         )}
@@ -180,7 +186,7 @@ export function Home() {
         )}
       />
 
-      <CartSection />
+      <CartSection handleCart={handleCart} />
     </>
   );
 }

@@ -1,15 +1,17 @@
 import { ComponentProps } from "react";
-import { View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import { MapPinIcon, ShoppingCartIcon } from "phosphor-react-native";
 import Animated, {
   interpolateColor,
   SharedValue,
   useAnimatedStyle,
 } from "react-native-reanimated";
+import { useNavigation } from "@react-navigation/native";
 
 import { styles } from "./styles";
 
 import { THEME } from "@styles/theme";
+import { AppNavigatorRoutesProps } from "@routes/app.routes";
 
 type Props = ComponentProps<typeof Animated.View> & {
   scrollY: SharedValue<number>;
@@ -18,6 +20,8 @@ type Props = ComponentProps<typeof Animated.View> & {
 };
 
 export function Header({ scrollY, onLayout, totalHeight }: Props) {
+  const navigator = useNavigation<AppNavigatorRoutesProps>();
+
   const headerStyle = useAnimatedStyle(() => {
     return {
       backgroundColor: interpolateColor(
@@ -37,6 +41,10 @@ export function Header({ scrollY, onLayout, totalHeight }: Props) {
     };
   });
 
+  function handleCart() {
+    navigator.navigate("cart");
+  }
+
   return (
     <Animated.View style={[styles.container, headerStyle]} onLayout={onLayout}>
       <View style={styles.containerLocation}>
@@ -46,7 +54,9 @@ export function Header({ scrollY, onLayout, totalHeight }: Props) {
           Guarapari, ES
         </Animated.Text>
 
-        <ShoppingCartIcon color={THEME.COLOR.YELLOW_DARK} />
+        <TouchableOpacity onPress={handleCart}>
+          <ShoppingCartIcon color={THEME.COLOR.YELLOW_DARK} />
+        </TouchableOpacity>
       </View>
     </Animated.View>
   );

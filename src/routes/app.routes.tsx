@@ -6,11 +6,13 @@ import {
 import { Splash } from "@screens/Splash";
 import { Home } from "@screens/Home";
 import { Product } from "@screens/Product";
+import { Cart } from "@screens/Cart";
 
 type AppRoutes = {
   splash: undefined;
   home: undefined;
   product: undefined;
+  cart: undefined;
 };
 
 export type AppNavigatorRoutesProps = NativeStackNavigationProp<AppRoutes>;
@@ -23,6 +25,7 @@ export function AppRoutes() {
       <Screen name="splash" component={Splash}/>
       <Screen name="home" component={Home} />
       <Screen name="product" component={Product} />
+      <Screen name="cart" component={Cart}/>
     </Navigator>
   );
 }
